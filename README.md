@@ -27,6 +27,8 @@ Auto-Loop 是一套面向 **Codex 本地项目**的科研协作 skill 与项目�
 
 ![Auto-Loop：从 Idea 输入到研究指导、探索执行、独立审查与持续迭代的流程图](https://github.com/user-attachments/assets/ffb033fb-91ec-446a-ad3d-f82b7a26a2cf)
 
+图中各角色的职责与使用方法见下文；可展开查看流程源码。
+
 <details>
 <summary>查看可编辑的 Mermaid 流程源码</summary>
 
