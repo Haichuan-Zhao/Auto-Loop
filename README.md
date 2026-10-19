@@ -25,7 +25,12 @@ Auto-Loop 是一套面向 **Codex 本地项目**的科研协作 skill 与项目�
 
 ## 工作流程
 
-```mermaid
+![Auto-Loop：从 Idea 输入到研究指导、探索执行、独立审查与持续迭代的流程图](https://github.com/user-attachments/assets/ffb033fb-91ec-446a-ad3d-f82b7a26a2cf)
+
+<details>
+<summary>查看可编辑的 Mermaid 流程源码</summary>
+
+```text
 flowchart TD
     A["人类填写 Idea.md<br/>研究问题 · 材料访问 · 阶段目标 · 预算"] --> B["主管检查输入、正式规则与已有进展"]
     B --> C{"具备启动条件？"}
@@ -55,6 +60,8 @@ flowchart TD
     class G,K execute;
     class I,J review;
 ```
+
+</details>
 
 `AGENTS.md` 是贯穿流程的唯一正式规则入口。`LOOP.md` 保存过程与判断，项目内原有 `README.md` 保存课题说明、正式结论和图注；二者不覆盖规则。
 
