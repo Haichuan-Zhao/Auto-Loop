@@ -1,120 +1,251 @@
-# Auto-Loop
+# Auto-Loop：多智能体科研探索
 
-**从一个 Idea 开始，让多 agent 持续推进科研探索。**
+**中文版本 0.1.6 · [MIT 许可证](LICENSE)**
 
-**中文** · [English](./README.en.md)
+Auto-Loop 是面向 Codex 的科研探索技能。人类定义研究问题、可用材料、实验因素和完成标准；智能体在这些边界内执行研究、探索有依据的创新方法，用实际、可复算的证据检验假设，并根据结果调整路线。
 
-Auto-Loop 是面向 **Codex 本地项目**的科研协作 skill 与模板。人类提供研究问题、材料和预算，主管协调研究指导、探索执行与独立审查，依据实验与反证修正假设，并把进展保存在一份 `LOOP.md` 中。
+研究可以围绕方法、规律、可行性或适用边界展开。与现有方法比较、取得更好效果可以体现方法价值，是否需要比较、是否要求性能优势由具体课题决定。提出优势结论时，必须提供公平、充分的比较证据。
 
-指导与执行分离，保留负结果，审查固定版本的证据；在授权范围与预算内持续选择下一项有依据的探索。
+## 快速开始
 
-**[下载中文完整包](./Auto-Loop-zh-CN.zip?raw=true)** · Windows / macOS / Linux / WSL · MIT
+1. **安装一次技能。** 将[本仓库的 GitHub 地址](https://github.com/Haichuan-Zhao/Auto-Loop)发给 Codex，按下方说明安装 `auto-loop`。
+2. **准备自己的研究目录。** 在目录中编写 `Idea.md`，说明研究问题、材料、探索范围、完成标准和执行授权，可参考 [输入模板](Idea.md)。
+3. **在该目录调用 `$auto-loop`。** 技能按最新 Idea 启动或恢复研究；后续修改同一份 Idea，再次调用即可续接。
 
-## 工作流程
+各课题保存在各自独立目录，只共享技能。开始研究时可以只有一份 Idea，不需要复制本仓库，也不要求课题准备 AGENTS.md 或角色配置。
 
-![Auto-Loop 科研循环：指导、执行、独立审查、记录与下一轮探索](https://github.com/user-attachments/assets/4054be74-a3ea-414e-8bfb-fa567869095b)
+## 安装技能
 
-主循环持续推进；实现或计算有误时返回执行，反证或证据不足时返回指导。达到阶段目标、预算耗尽或遇到真实阻塞时保存进展并交接。
+需要能使用本地技能、读写研究文件和执行命令的 Codex 环境。研究计算还需要可执行 Jupyter notebook 的环境及适合课题的第三方库；按实际课题准备依赖，无需预装所有计算框架。多智能体分工需要当前环境提供相应工具。
 
-## 快速使用
+### 方式一：让 Codex 从 GitHub 安装（推荐）
 
-1. 下载并解压中文包，保留 `.agents` 和 `.codex` 隐藏目录。包内说明、规则、skill、角色配置和 Idea 示例均为中文，标准文件名与配置键保持不变。
-2. 在 Codex 的**本地环境**中打开解压后的 `Auto-Loop` 根目录。完整协作需要实际可用的原生子 agent、终端及 notebook 执行能力。
-3. 将 `Idea.md` 替换为真实的**问题、材料访问条件、阶段目标、范围与预算**，状态改为“待探索”；将 `LOOP.md` 初始化为新课题的实际进展。方法与实验路径可以留给 agent 探索。
-4. 由人类阅读 `AGENTS.md` 并设置、检查适合当前系统的只读保护，然后发送下方启动指令。
-
-<details>
-<summary>文件保护：按实际系统选择，由人类执行</summary>
-
-在解压后的课题根目录执行。ZIP 和 Git 不保证保留文件保护。
-
-**Windows（PowerShell）**
-
-```powershell
-attrib +R ".\AGENTS.md"
-Get-Item -LiteralPath ".\AGENTS.md" | Select-Object Name, IsReadOnly
-icacls ".\AGENTS.md"
-```
-
-`attrib` 设置只读属性，`icacls` 查看 ACL；这不等于同账户无法解除的强制保护。需要更强隔离时，由人类或管理员配置 agent 无权更改的权限与执行环境。参见 [Microsoft 文件属性](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/attrib)与[权限说明](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/icacls)。
-
-**macOS**
-
-```bash
-chmod a-w AGENTS.md
-chflags uchg AGENTS.md
-ls -lO AGENTS.md
-```
-
-**Linux / WSL**
-
-```bash
-chmod a-w AGENTS.md
-ls -l AGENTS.md
-```
-
-WSL 使用 Windows 挂载目录时，还需核对 [Windows 侧实际权限](https://learn.microsoft.com/en-us/windows/wsl/file-permissions)；不能把 `chmod` 返回成功当作强制隔离证据。文件保护及其恢复均由人类维护，agent 只读检查。
-
-</details>
+将下面整段发送给 Codex：
 
 ```text
-使用 auto-loop 技能，读取当前项目的 Idea.md。
-我授权在 Idea.md 指定的范围与预算内使用原生多 agent 协作。
-请按根目录 AGENTS.md，分派研究指导、探索执行与独立审查，
-核对实际系统、文件保护、notebook 内核与计算设备，
-保持指导与执行分离，在 LOOP.md 记录实际证据、结果和下一步，
-持续推进到本次收尾条件；若 Idea 仍为示例，仅检查输入。
+使用 $skill-installer 安装这个 GitHub 仓库中的 auto-loop。
+仓库地址：https://github.com/Haichuan-Zhao/Auto-Loop
+技能目录：.agents/skills/auto-loop
+安装到当前 Codex 可发现的用户级技能目录，供不同独立课题调用。
+核对仓库实际默认分支；我指定标签、分支或提交时采用指定版本。
+如果已有同名技能，先检查安装来源和本地定制，按原安装方式处理。
+完成后告知实际安装路径、技能版本和来源。本次只安装，不启动研究。
 ```
 
-若 skill 未显示，可先要求读取 `.agents/skills/auto-loop/SKILL.md`，再执行上述指令。角色未自动发现时，skill 提供文件绑定方式；没有真实子 agent 能力时不能宣称已完成独立审查。配置入口见 [OpenAI 子 agent 文档](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents)与[技能文档](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)。
+只安装完整的 `auto-loop` 技能目录，其中包含 `SKILL.md`、`agents/openai.yaml` 和 `LICENSE`。仓库根目录的 README、AGENTS、Idea 模板及可选角色配置不是安装依赖。已有发布标签时可以指定标签以固定版本；未指定时核对实际采用的分支与提交。
 
-<details>
-<summary>运行环境与 Windows 注意事项</summary>
+Codex 的内置安装器支持从其他 GitHub 仓库获取技能。安装后在下一回合或新对话中检查技能列表；未出现时重启客户端再核对。[OpenAI 官方技能文档](https://learn.chatgpt.com/docs/build-skills#install-curated-skills-for-local-use)说明了这项安装方式。
 
-- 在选定的 Python/虚拟环境中准备 `ipykernel` 和 notebook 执行工具（如 `nbclient`）。科学依赖由课题决定，PyTorch 按需使用；notebook 内核与依赖环境必须一致。
-- Windows 可使用原生 PowerShell；WSL 是另一种执行环境，路径、Python 和依赖应保持在同一侧。使用方式见 [OpenAI Windows 文档](https://learn.chatgpt.com/docs/windows/windows-sandbox)。
-- macOS 按实际支持使用 MPS；Windows/Linux/WSL 按硬件、驱动与框架支持使用 CUDA 等后端；不可用时使用 CPU，记录实际设备。
-- Windows notebook 中的 PyTorch DataLoader 先用 `num_workers=0` 验证，再按实测决定并行，参见 [PyTorch Windows FAQ](https://docs.pytorch.org/docs/stable/notes/windows.html)。科研实现仍直接写入并执行 `.ipynb`。
+### 方式二：下载后安装
 
-本版完成静态配置、语言与打包检查；尚未进行 Windows 端到端科研运行。模板不附带真实数据、训练模型或科研性能指标。
+在 GitHub 选择 **Code → Download ZIP** 并解压，或克隆仓库。可以让 Codex 根据解压或克隆后的位置，将 `.agents/skills/auto-loop` 安装到用户级技能目录；明确只安装技能，不把仓库当作研究课题。
 
-</details>
+手动安装时，复制完整的 `auto-loop` 文件夹，保持以下结构，不要只复制 SKILL.md。`.agents` 是隐藏目录，文件管理器中需要开启隐藏文件显示。
 
-### 查看、暂停与恢复
+```text
+用户级技能目录/
+└── auto-loop/
+    ├── SKILL.md
+    ├── agents/
+    │   └── openai.yaml
+    └── LICENSE
+```
 
-- **查看**：读取 `LOOP.md` 顶部的当前认识、待验证事项和下一步。
-- **暂停**：发送“暂停 auto-loop，保存实际运行状态、证据位置和恢复位置。”
-- **恢复**：发送“使用 auto-loop 恢复此前已授权的课题，核对实际进程、产物与剩余预算后继续。”新聊天需同时说明原任务范围和已有授权。
+当前官方文档列出的用户级技能位置是 `~/.agents/skills/`；安装器或管理工具采用其他受支持路径时，以客户端实际发现的位置为准。安装前检查已有同名技能，不重复创建不同版本的入口。[技能发现位置与同名技能行为](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)以官方说明为准。
+
+### 方式三：使用 Skills Manager
+
+已经使用 Skills Manager 的用户可以通过管理器安装并只部署到 Codex，保留来源和部署关系。希望后续从 GitHub 更新时，向管理器提供所选分支或标签下 `.agents/skills/auto-loop` 目录的 GitHub URL。
+
+如果使用已下载的仓库，可以在仓库根目录执行：
+
+```sh
+skills-manager-cli skills install ./.agents/skills/auto-loop --local
+skills-manager-cli skills deploy auto-loop --agent codex
+skills-manager-cli --json skills status auto-loop
+```
+
+本地导入的更新来自该本地目录；Git 来源的更新来自其记录的远程版本。不要用多个安装器反复覆盖同一入口。Skills Manager 是可选工具，不是运行本技能的依赖。
+
+### 确认安装完成
+
+在 Codex 中发送：
+
+```text
+请检查 auto-loop 是否可用，报告实际 SKILL.md 路径及 metadata.version。
+本次只检查安装，不启动研究。
+```
+
+检查到的版本应与所选来源中的技能版本一致。下载、克隆或在 GitHub 查看文件本身不等于完成用户级安装。若出现多个同名技能，先核对来源，明确实际采用哪一份。
+
+## 填写 Idea.md
+
+在课题自己的目录中创建 Idea.md，起步时可以只有这个文件：
+
+```text
+Research/
+└── Idea.md
+```
+
+可直接按自己的语言编写，也可以参考或复制 [Idea.md 输入模板](Idea.md)后填写。模板不是必须格式，不需要复制其他项目文档。启动所需的核心信息是：
+
+| 输入 | 需要说明什么 |
+| --- | --- |
+| 研究问题与目标 | 研究对象、可获得的输入、要解决的问题，以及希望得到的方法或认识。 |
+| 材料与权限 | 数据和已有成果的位置或获准获取途径、访问边界、已知的测试使用历史；未知处如实标注。 |
+| 本阶段范围 | 明确只在固定任务下探索方法，或由人类列出实际因素、允许取值、固定条件和优先顺序。 |
+| 评价与完成标准 | 什么证据能够回答问题，怎样判断目标完成；有性能要求时说明指标与标准。 |
+| 执行授权 | 允许执行的工作、设备及多智能体使用范围；运行时间上限可选，也可在启动时通过聊天设置。 |
+
+模型结构、优化器、代码组织和资源配置可以交给智能体在上述范围内探索。划分方式和指标计算等技术细节可以注明“由智能体依据问题确定并在正式评价前固定”；影响目标含义的定义仍需人类明确，智能体不能自造成功阈值。
+
+不要求提前制定完整实验套件，也不要求所有课题都比较现有方法。没有现成数据时，写清是否允许寻找和获取许可允许使用的公开数据。模板保留“示例，未启动”状态；实际使用时替换占位内容，并在聊天中明确启动。
+
+## 启动、继续与运行边界
+
+在 Codex 中打开实际研究目录，或明确提供该目录的位置，然后发送：
+
+```text
+使用 $auto-loop，读取当前研究目录中的 Idea.md 并开始研究。
+完整读取并遵守技能规则，按我设定的问题、因素、材料权限和完成标准推进。
+我授权本次使用原生多智能体，由你协调研究指导、探索执行与独立审查。
+充分使用当前已授权设备；新增科学因素先提出建议，不自行展开。
+启动时说明运行方式，按实际工作维护 notebook、README 和一份 LOOP。
+```
+
+若不使用多智能体，应明确由人类承担必要指导和独立判断；单个智能体的检查只能称为自查。可选的 [角色配置](.codex/agents/Guide.toml)供需要自定义角色的用户参考，不必复制到每个课题；普通原生子智能体也可按技能分工。[OpenAI 官方子智能体文档](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents)说明了工具与自定义角色的配置方式。
+
+默认按最新 Idea 持续探索，由指导角色承担达标分析，结合实际结果与独立审查判断是否继续。启动时会告知用户可以自行设置时间上限；不要求先填写固定小时数、轮数或 token 数值。
+
+需要时限时，在 Idea 或启动消息中补充：
+
+```text
+本次最多运行 2 小时，包含准备、计算、分析、审查与收尾。
+到时保存进展并停止；尚未达标时说明差距和恢复位置。
+```
+
+各轮与并行智能体共用同一墙钟截止时间，恢复不自动延长。账户额度、实际工具权限及人类给定限制始终生效。默认持续探索不代表后台常驻运行，技能也不自动创建定时任务。
+
+后续修改同一份 Idea 后，可以发送：
+
+```text
+使用 $auto-loop，按最新 Idea.md 整理本课题并继续。
+先核对新旧范围、已有证据、实际进程与文件依赖，复用仍有效的工作。
+删除确认无用途、无依赖且无唯一证据的冗余内容，修复引用后再推进。
+更新已有 README 和同一份 LOOP，不按轮次新建实验或默认归档全部旧稿。
+```
+
+唯一原始证据、必要模型和复算材料继续保留；重要反证及测试使用历史保留原适用范围。修改 Idea 不重置实验编号、累计消耗或仍有效的时间上限。原时限已到而需要继续计算时，明确给出新的运行授权。
+
+## 探索 loop 如何运作
+
+下一步由当前最影响判断的问题决定。可以返回材料和数据理解、否定假设、简化或重建方法；下图展示反馈关系，不要求每轮依次经过所有节点。
+
+```mermaid
+flowchart TD
+    H["人类输入 / 更新 Idea<br/>明确目标、材料与因素"]
+    C["协调：核对输入与现状<br/>整理项目，说明运行边界"]
+    G["指导与分析<br/>识别问题与创新假设"]
+    E["探索执行<br/>最小实现与诊断<br/>生成证据，呈现结果"]
+    R["独立审查固定证据<br/>核验计算与研究结论"]
+    A{"满足最新 Idea 要求？"}
+    O["归纳研究发现与局限<br/>报告目标达成"]
+    P["按实际原因收尾<br/>保存差距与恢复位置"]
+
+    H --> C --> G --> E
+    E -->|"反证 / 新疑点"| G
+    E -->|"关键证据就绪"| R
+    R -->|"退回 / 补证"| G
+    R -->|"审查支持"| A
+    A -->|"未达标，可继续"| G
+    A -->|"已达标"| O
+    G -.->|"停止 / 上限 / 阻塞"| P
+
+    classDef human fill:#EAF3FA,stroke:#0072B2,color:#16324F
+    classDef explore fill:#FFF3E8,stroke:#D55E00,color:#512A16
+    classDef review fill:#F2F4F5,stroke:#53616B,color:#24343F
+    class H human
+    class G,E explore
+    class C,R,A,O,P review
+```
+
+| 职责 | 主要判断或交付 |
+| --- | --- |
+| 协调 | 核对目标、权限和资源，分派当前问题，集中维护说明、探索记录和恢复位置。 |
+| 研究指导与达标分析 | 查阅本课题实际证据，判断假设、竞争解释、最小方法和重要转向，分析目标差距。 |
+| 探索执行 | 实现并验证获准的方法，诊断计算和结果，交付真实产物、负结果及候选下一步。 |
+| 独立审查 | 对固定版本核验数据、代码、模型与计算，再评估研究结论、创新依据及适用边界。 |
+
+指导与执行由不同实际智能体或人类承担；独立审查者不参与被审版本的设计、实现或调参。各角色直接检查本课题证据，不能仅根据其他角色的总结宣布通过。
+
+计算正确、研究结论、创新依据和整体达标分别判断。充分的反证可以回答某些研究问题；Idea 明确要求性能优势时，未获得所要求的优势仍记为目标未达成。单条路线失败不自动结束课题，也不能靠堆叠模块或增加无关实验维持运行。
+
+## 研究产物与执行约束
+
+完整执行规则自包含于 [SKILL.md](.agents/skills/auto-loop/SKILL.md)。本 README 用于介绍、安装与使用；Idea 承载人类研究输入。
+
+| 内容 | 约定 |
+| --- | --- |
+| 科研代码 | 自编科研逻辑直接写入并实际执行 `.ipynb`，包括诊断、复算和绘图，不使用自编 `.py` 或命令行内联科研计算替代。 |
+| 文件命名 | 简短、有实际含义的英文名，首个英文字母大写；入口按职责命名，如 `Prepare.ipynb`、`Compare.ipynb`，不统一叫 Run。 |
+| 实验目录 | 对应人类已设因素，从 `01_` 连续编号；修错、评估、复算和绘图沿用原实验，不按角色增加 Audit、Review、Evaluate 等目录。 |
+| 项目说明 | 根 README 解释课题、材料、方法、正式结果与局限；每个实际维护的研究目录有就地 README，说明用途、入口和实际结果。 |
+| 探索过程 | 一份 LOOP 记录实质性假设、实际实验、反证、判断、审查状态及下一步；不记录安装更新和文档维护。 |
+| 结果与模型 | 必要指标、模型、预处理状态及复算入口留在原实验，保留支持结论和恢复推理所需的证据。 |
+| 科研图 | 中文优先，以互补面板组成大图，每幅最多 3 行、3 列、9 个子图；图例用实际方法名，坐标写清量名与单位，正式图只输出高质量 JPG。 |
+| 设备使用 | 在实际 notebook 中检查可用后端、数值、吞吐和内存，充分使用已授权设备的有效算力，保留系统稳定所需余量。 |
+
+图表充分呈现真实样本、完整曲线、预测散点、必要误差和适用边界，按问题选择组合，不强制填满九宫格。不得为图面密度伪造点或扩大因素范围；提出方法优势时须展示同口径比较、改善与退化。
+
+调用后，命名、notebook、实验范围和文档限制是必须遵守的执行规则，覆盖主管及所有子智能体。开始、恢复、新阶段和上下文压缩后重新读取实际技能，子智能体也须自行读取同一入口；工具或依赖不足不能成为擅自换格式的理由。
+
+## 更新与回退
+
+先确认当前技能的实际路径、`metadata.version`、安装来源及本地定制，在研究阶段边界更新。正在运行或固定待审的版本保持稳定；升级只更新技能，不覆盖课题的 Idea、README、LOOP、数据、notebook、模型和图片。
+
+| 安装方式 | 更新方法 |
+| --- | --- |
+| Codex 内置安装器 | 提供同一仓库和新的目标标签、分支或提交，请 Codex 检查旧安装及定制后更新完整技能目录。安装器遇到已有目录会停止，重复执行安装不等于自动更新。 |
+| 手动复制 | 获取目标版本，先比较并保留本地定制，再替换完整 `auto-loop` 目录，检查文件结构及客户端实际发现的版本。 |
+| Skills Manager | 按记录的来源检查并更新这一项，保留技能标识、标签、预设和部署关系；不要删除重装来更新。 |
+
+Skills Manager 的检查和更新命令：
+
+```sh
+skills-manager-cli --json skills check auto-loop
+skills-manager-cli skills update auto-loop
+skills-manager-cli --json skills status auto-loop
+```
+
+Git 分支来源更新到该分支的新内容；固定标签或提交不会自动切换到下一版本，升级时须明确选择新的来源版本。本地来源要先更新原下载或克隆目录，再让管理器重新导入；仅更新仓库文件不会自动刷新管理器中的技能。管理器报告额外文件或定制冲突时先处理，不强行覆盖。
+
+更新后重新检查实际加载路径和版本；未反映变化时重启 Codex。回退使用先前保留的完整技能版本，核对课题兼容性，并如实标明哪些结论仍需核验。安装来源与管理工具的更新行为不同，不假定任何方式都会自动跟随最新版本。
+
+## 常见问题
+
+| 问题 | 说明 |
+| --- | --- |
+| 是否每次对话都会自动执行全部规则？ | 安装让技能可发现；完整指令在选用技能时读取。启动、恢复或新对话中显式调用 `$auto-loop`，并核对实际入口。 |
+| 是否需要 AGENTS.md？ | 独立课题无需准备。本仓库的 AGENTS 只约束技能维护；运行环境已生效的其他系统和项目指令仍适用。 |
+| 是否必须把方法做得优于现有方法？ | 按 Idea 和实际主张判断；执行研究、探索创新方法是核心。提出性能优势时必须公平比较。 |
+| 是否会保证创新、正结果或自动无限运行？ | 不保证研究结果；运行受人类范围、时限、账户额度和实际工具约束，中断后保存恢复位置。 |
+
+Auto-Loop 是指令型技能，不包含科研数据、训练模型或后台调度服务。角色分工与技能要求不等于操作系统权限隔离；实际设备效果、科学结论与目标达成仍须在具体课题中验证。
+
+## 仓库文件与参与方式
+
+| 文件 | 用途 |
+| --- | --- |
+| [SKILL.md](.agents/skills/auto-loop/SKILL.md) | 自包含的中文科研执行规则，技能主要源文件。 |
+| [openai.yaml](.agents/skills/auto-loop/agents/openai.yaml) | 中文界面名称、简介及调用提示。 |
+| [Idea.md](Idea.md) | 可选的研究输入模板，示例本身不构成启动授权。 |
+| [.codex/agents/](.codex/agents/Guide.toml) | 可选的[指导](.codex/agents/Guide.toml)、[执行](.codex/agents/Executor.toml)、[审查](.codex/agents/Reviewer.toml)配置，不随技能自动安装。 |
+| [AGENTS.md](AGENTS.md) | 本仓库维护约定，不复制到研究课题。 |
+| [LICENSE](LICENSE) | MIT 许可证，独立技能目录中包含相同文本。 |
+
+反馈问题时，请提供技能版本、客户端与实际加载位置、设备及后端、最小复现步骤和脱敏后的必要日志。改进建议或贡献应说明具体问题、预期行为和实际验证；涉及规则时同步核对 Idea、角色和使用说明。不要提交非公开研究数据、密钥或个人敏感信息。
 
 ## 许可证
 
-[MIT License](https://opensource.org/license/mit) · © 2026 Haichuan-Zhao。压缩包内附完整 `LICENSE`。标准 MIT 许可正文保留英文。
+本项目采用 [MIT 许可证](LICENSE)。文档和技能只维护中文，许可证保留标准原文。实际课题的数据、论文、第三方代码和模型遵循各自来源的许可与访问条件。
 
-<details>
-<summary>完整 MIT 许可</summary>
-
-```text
-MIT License
-
-Copyright (c) 2026 Haichuan-Zhao
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>

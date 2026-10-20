@@ -1,0 +1,10 @@
+# 统一文本换行，便于不同设备审阅与更新
+* text=auto
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.ipynb text eol=lf
+LICENSE text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf

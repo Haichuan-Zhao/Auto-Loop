@@ -1,0 +1,18 @@
+# 系统杂项
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# 本地计算环境与缓存
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+node_modules/
+
+# 本地凭据；示例配置可正常跟踪
+.env
+.env.*
+!.env.example

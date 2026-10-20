@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Loop 科研探索"
+  short_description: "从独立课题的研究想法出发，执行研究并探索创新方法，以实际证据回答问题、判断目标完成情况"
+  default_prompt: "使用 $auto-loop，完整读取并严格遵守技能规则，按最新 Idea.md 在人类设定范围内执行研究、探索创新研究方法，遵守命名、ipynb 和文档限制，启动时说明运行边界，恢复时先整理项目。"
