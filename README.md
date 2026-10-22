@@ -14,7 +14,7 @@ Auto-Loop 是面向 Codex 的科研探索技能。人类定义研究问题、可
 2. **准备自己的研究目录。** 在目录中编写 `Idea.md`，说明研究问题、材料、探索范围、完成标准和执行授权，可参考 [输入模板](Idea.md)。
 3. **在该目录调用 `$auto-loop`。** 技能按最新 Idea 启动或恢复研究；后续修改同一份 Idea，再次调用即可续接。
 
-各课题保存在各自独立目录，只共享技能。开始研究时可以只有一份 Idea，不需要复制本仓库，也不要求课题准备 AGENTS.md 或角色配置。
+各课题保存在各自独立目录，只共享技能。开始研究时可以只有一份 Idea，不需要复制本仓库或角色配置。
 
 ## 探索 loop 如何运作
 
@@ -72,7 +72,7 @@ flowchart LR
 完成后告知实际安装路径、技能版本和来源。本次只安装，不启动研究。
 ```
 
-只安装完整的 `auto-loop` 技能目录，其中包含 `SKILL.md`、`agents/openai.yaml` 和 `LICENSE`。仓库根目录的 README、AGENTS、Idea 模板及可选角色配置不是安装依赖。已有发布标签时可以指定标签以固定版本；未指定时核对实际采用的分支与提交。
+只安装完整的 `auto-loop` 技能目录，其中包含 `SKILL.md`、`agents/openai.yaml` 和 `LICENSE`；Idea 模板及可选角色配置可按需参考。已有发布标签时可以指定标签以固定版本；未指定时核对实际采用的分支与提交。
 
 Codex 的内置安装器支持从其他 GitHub 仓库获取技能。安装后在下一回合或新对话中检查技能列表；未出现时重启客户端再核对。[OpenAI 官方技能文档](https://learn.chatgpt.com/docs/build-skills#install-curated-skills-for-local-use)说明了这项安装方式。
 
@@ -269,10 +269,6 @@ Git 分支来源更新到该分支的新内容；固定标签或提交不会自�
 
 安装让技能可发现；完整指令在选用技能时读取。启动、恢复或新对话中显式调用 `$auto-loop`，并核对实际入口。
 
-**是否需要 AGENTS.md？**
-
-独立课题无需准备。本仓库的 AGENTS 只约束技能维护；运行环境已生效的其他系统和项目指令仍适用。
-
 **是否必须把方法做得优于现有方法？**
 
 按 Idea 和实际主张判断；执行研究、探索创新方法是核心。提出性能优势时必须公平比较。
@@ -283,18 +279,17 @@ Git 分支来源更新到该分支的新内容；固定标签或提交不会自�
 
 Auto-Loop 是指令型技能，不包含科研数据、训练模型或后台调度服务。角色分工与技能要求不等于操作系统权限隔离；实际设备效果、科学结论与目标达成仍须在具体课题中验证。
 
-## 仓库文件与参与方式
+## 仓库内容
 
 | 文件 | 用途 |
 | --- | --- |
-| [SKILL.md](.agents/skills/auto-loop/SKILL.md) | 自包含的中文科研执行规则，技能主要源文件。 |
+| [SKILL.md](.agents/skills/auto-loop/SKILL.md) | 自包含的中文科研执行规则。 |
 | [openai.yaml](.agents/skills/auto-loop/agents/openai.yaml) | 中文界面名称、简介及调用提示。 |
 | [Idea.md](Idea.md) | 可选的研究输入模板，示例本身不构成启动授权。 |
-| [.codex/agents/](.codex/agents/) | 可选的[指导](.codex/agents/Guide.toml)、[执行](.codex/agents/Executor.toml)、[审查](.codex/agents/Reviewer.toml)配置，不随技能自动安装。 |
-| [AGENTS.md](AGENTS.md) | 本仓库维护约定，不复制到研究课题。 |
+| [可选角色](.codex/agents/) | [指导](.codex/agents/Guide.toml)、[执行](.codex/agents/Executor.toml)、[审查](.codex/agents/Reviewer.toml)配置，不随技能自动安装。 |
 | [LICENSE](LICENSE) | MIT 许可证，独立技能目录中包含相同文本。 |
 
-反馈问题时，请提供技能版本、客户端与实际加载位置、设备及后端、最小复现步骤和脱敏后的必要日志。改进建议或贡献应说明具体问题、预期行为和实际验证；涉及规则时同步核对 Idea、角色和使用说明。不要提交非公开研究数据、密钥或个人敏感信息。
+反馈问题时，请提供技能版本、客户端、复现步骤及脱敏后的必要信息。
 
 ## 许可证
 
