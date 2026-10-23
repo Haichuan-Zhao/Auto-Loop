@@ -23,9 +23,9 @@ Auto-Loop 是面向 Codex 的科研探索技能。人类定义问题、材料、
 ```mermaid
 %%{init: {"theme":"base","flowchart":{"htmlLabels":false,"nodeSpacing":20,"rankSpacing":32,"padding":10,"diagramPadding":8,"curve":"step"},"themeVariables":{"fontFamily":"Arial, Microsoft YaHei, PingFang SC, sans-serif","fontSize":"16px","lineColor":"#64748B"}}}%%
 flowchart LR
-    I["每轮对齐 Idea<br/>核心问题与足够条件"] --> E["探索方法<br/>领域依据与实际证据"]
-    E --> J["判断与核验<br/>指导分析与独立审查"]
-    J --> O["收尾与恢复<br/>发现、局限与恢复入口"]
+    I["每轮对齐 Idea<br/>主问题与边界"] --> E["探索方法<br/>领域依据与检验"]
+    E --> J["判断与核验<br/>指导 · 独立审查"]
+    J --> O["收尾与恢复<br/>发现与恢复入口"]
     J --> I
 
     classDef human fill:#EAF3FA,stroke:#0072B2,color:#16324F
