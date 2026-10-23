@@ -20,31 +20,17 @@ Auto-Loop 是面向 Codex 的科研探索技能。人类定义问题、材料、
 
 每轮从人类原意和当前证据缺口出发。有允许探索的数据时，先用综合数据图理解关键关系，再选择方法。下图表示职责与反馈关系，各项工作按实际问题往返，不要求每轮完整走一遍。
 
-```mermaid
-%%{init: {"theme":"base","flowchart":{"htmlLabels":false,"nodeSpacing":20,"rankSpacing":32,"padding":10,"diagramPadding":8,"curve":"step"},"themeVariables":{"fontFamily":"Arial, Microsoft YaHei, PingFang SC, sans-serif","fontSize":"16px","lineColor":"#64748B"}}}%%
-flowchart LR
-    I["对齐 Idea<br/>问题与边界"] --> E["探索方法<br/>依据与检验"]
-    E --> J["研究判断<br/>独立审查"]
-    J --> O["收尾恢复<br/>发现与局限"]
-    J --> I
-
-    classDef human fill:#EAF3FA,stroke:#0072B2,color:#16324F
-    classDef explore fill:#FFF3E8,stroke:#D55E00,color:#512A16
-    classDef review fill:#F2F4F5,stroke:#53616B,color:#24343F
-    class I human
-    class E explore
-    class J,O review
-```
+![Auto-Loop 探索流程：对齐 Idea、探索方法、研究判断，并按证据反馈或收尾](assets/loop.svg)
 
 回环使用允许的反馈重新对齐 Idea、补齐证据；已达标或到达运行边界时归纳收尾。
 
 <table>
 <thead><tr><th nowrap>职责</th><th>主要工作</th></tr></thead>
 <tbody>
-<tr><td nowrap>协调</td><td>核对 Idea、权限与资源，明确分工、写入路径和整合责任。</td></tr>
-<tr><td nowrap>研究指导</td><td>从领域依据提出假设，比较路线，按研究用途分析达标差距。</td></tr>
-<tr><td nowrap>探索执行</td><td>检验方法与数据关系，交付实际证据，替换当前产物。</td></tr>
-<tr><td nowrap>独立审查</td><td>核验固定版本的计算、方法依据、图中证据与研究结论。</td></tr>
+<tr><td nowrap>协调</td><td>核对目标、权限与资源，明确分工和整合责任。</td></tr>
+<tr><td nowrap>研究指导</td><td>依据领域知识提出假设，取舍路线并分析达标差距。</td></tr>
+<tr><td nowrap>探索执行</td><td>检验方法与数据关系，交付证据并替换产物。</td></tr>
+<tr><td nowrap>独立审查</td><td>按固定版本核验方法、计算、图与结论。</td></tr>
 </tbody>
 </table>
 
@@ -178,14 +164,14 @@ auto-loop/
 <table>
 <thead><tr><th nowrap>内容</th><th>执行要求</th></tr></thead>
 <tbody>
-<tr><td nowrap>科研代码</td><td>自编科研逻辑写入 <code>.ipynb</code> 并实际执行。</td></tr>
-<tr><td nowrap>命名方式</td><td>简短、有职责含义的英文名，首个英文字母大写。</td></tr>
-<tr><td nowrap>实验范围</td><td>按人类问题与因素推进；随机过程用一个固定种子。</td></tr>
-<tr><td nowrap>目录组织</td><td>代码与数据、结果/模型、图片分层，首次写入前落实子目录。</td></tr>
-<tr><td nowrap>产物替换</td><td>保留当前必要入口；候选取舍后清理，不按人数或轮次复制。</td></tr>
-<tr><td nowrap>科研图表</td><td>有数据时先理解再建模；中文 JPG，每幅最多 3 行、3 列、9 个子图。</td></tr>
+<tr><td nowrap>科研代码</td><td>自编科研逻辑在 <code>.ipynb</code> 中实际执行。</td></tr>
+<tr><td nowrap>命名方式</td><td>有职责含义的英文名，首个英文字母大写。</td></tr>
+<tr><td nowrap>实验范围</td><td>遵守人类设定的范围，随机过程用一个固定种子。</td></tr>
+<tr><td nowrap>目录组织</td><td>代码、数据、结果/模型、图片分层，先建子目录。</td></tr>
+<tr><td nowrap>产物替换</td><td>更新原入口与输出，清理无用途旧产物。</td></tr>
+<tr><td nowrap>科研图表</td><td>中文 JPG，最多 3 行、3 列、9 个互补子图。</td></tr>
 <tr><td nowrap>设备适配</td><td>在 notebook 实测可用后端、数值、吞吐与内存。</td></tr>
-<tr><td nowrap>研究记录</td><td>各研究目录有 README，过程集中在一份 LOOP。</td></tr>
+<tr><td nowrap>研究记录</td><td>各研究目录有 README，过程只用一份 LOOP。</td></tr>
 </tbody>
 </table>
 
