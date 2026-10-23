@@ -18,3 +18,5 @@ node_modules/
 !.env.example
 
 /AGENTS.md
+/Idea.md
+/.codex/agents/
